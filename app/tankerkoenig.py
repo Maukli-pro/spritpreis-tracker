@@ -35,5 +35,7 @@ def tankstellen_suchen(lat: float, lng: float, radius: float, sorte: str) -> lis
             "entfernung_km": t["dist"],
             "preis": t["price"],
             "geoeffnet": t["isOpen"],
+            "lat": t["lat"],
+            "lng": t["lng"],
         })
     return ergebnis
