@@ -28,6 +28,7 @@ def tankstellen_suchen(lat: float, lng: float, radius: float, sorte: str) -> lis
     ergebnis = []
     for t in daten["stations"]:
         ergebnis.append({
+            "id": t["id"],
             "name": t["name"],
             "marke": t["brand"],
             "adresse": f'{t["street"]} {t["houseNumber"] or ""}'.strip(),
