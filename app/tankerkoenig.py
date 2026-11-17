@@ -2,6 +2,7 @@ import os
 
 import httpx
 from dotenv import load_dotenv
+from typer import params
 
 load_dotenv()
 
@@ -50,3 +51,32 @@ def _anfrage_senden(params: dict) -> list[dict]:
         raise RuntimeError(daten.get("message", "Unbekannter Fehler bei Tankerkönig"))
 
     return daten["stations"]
+
+
+
+def alle_preise_abrufen(lat: float, lng: float, radius: float) -> list[dict]:
+    params = {
+        "lat": lat,
+        "lng": lng,
+        "rad": radius,
+        "sort": "dist",
+        "type": "all",
+    }
+    stationen = _anfrage_senden(params)
+
+    ergebnis = []
+    for t in stationen:
+        ergebnis.append({
+            "id": t["id"],
+            "name": t["name"],
+            "marke": t["brand"],
+            "adresse": f'{t["street"]} {t["houseNumber"] or ""}'.strip(),
+            "ort": f'{t["postCode"]} {t["place"]}',
+            "geoeffnet": t["isOpen"],
+            "lat": t["lat"],
+            "lng": t["lng"],
+            "e5": t["e5"],
+            "e10": t["e10"],
+            "diesel": t["diesel"],
+        })
+    return ergebnis
